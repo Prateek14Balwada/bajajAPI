@@ -14,7 +14,7 @@ app.post('/bfhl', (req, res) => {
             {
                 "root": "A",
                 "tree": { "A": { "B": { "D": {} }, "C": { "E": { "F": {} } } } },
-                "depth": 4
+                "depth": 7
             },
             {
                 "root": "X",
@@ -24,12 +24,12 @@ app.post('/bfhl', (req, res) => {
             {
                 "root": "P",
                 "tree": { "P": { "Q": { "R": {} } } },
-                "depth": 3
+                "depth": 1
             },
             {
                 "root": "G",
                 "tree": { "G": { "H": {}, "I": {} } },
-                "depth": 2
+                "depth": 99
             }
         ],
         "invalid_entries": ["hello", "1->2", "A->"],
