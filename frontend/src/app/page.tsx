@@ -25,28 +25,28 @@ export default function Home() {
     try {
       setLoading(true);
       setError(null);
-      
+
       let parsedData;
       try {
         parsedData = JSON.parse(input);
       } catch (e) {
         throw new Error("Bad JSON");
       }
-      
+
       if (!Array.isArray(parsedData)) {
         throw new Error("Need an array");
       }
 
-      const res = await fetch('http://localhost:8080/bfhl', {
+      const res = await fetch('https://bajajapi-avbo.onrender.com/bfhl', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: parsedData })
       });
-      
+
       if (!res.ok) {
         throw new Error(`Error: ${res.status}`);
       }
-      
+
       const data = await res.json();
       setResult(data);
     } catch (err: any) {
@@ -60,14 +60,14 @@ export default function Home() {
   return (
     <div>
       <h1>My Node Project</h1>
-      
+
       <div className="container">
         <p>Type your array here:</p>
-        <textarea 
+        <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <br/><br/>
+        <br /><br />
         <button onClick={handleSubmit} disabled={loading}>
           {loading ? 'Please wait...' : 'Submit Data'}
         </button>
@@ -78,7 +78,7 @@ export default function Home() {
       {result && (
         <div>
           <h2>Results</h2>
-          
+
           <table className="summary-table">
             <thead>
               <tr>
@@ -95,37 +95,37 @@ export default function Home() {
               </tr>
             </tbody>
           </table>
-          
+
           <div className="container">
             <h3>Bad Entries:</h3>
             <ul>
               {result.invalid_entries.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
-            
+
             <h3>Duplicates:</h3>
             <ul>
               {result.duplicate_edges.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
-          
+
           <div className="container">
             <h2>Trees:</h2>
             {result.hierarchies.map((h, i) => (
-              <div key={i} style={{marginBottom: '20px', borderBottom: '1px solid black', paddingBottom: '10px'}}>
+              <div key={i} style={{ marginBottom: '20px', borderBottom: '1px solid black', paddingBottom: '10px' }}>
                 <p>
-                  <strong>Root is {h.root}</strong> 
-                  {h.has_cycle && <span style={{color: 'red'}}> (CYCLE!)</span>}
+                  <strong>Root is {h.root}</strong>
+                  {h.has_cycle && <span style={{ color: 'red' }}> (CYCLE!)</span>}
                   {h.depth && <span> - Depth is {h.depth}</span>}
                 </p>
-                
+
                 <p>Tree Data:</p>
-                <pre style={{backgroundColor: '#e0e0e0', padding: '10px', border: '1px solid black', width: '300px'}}>
+                <pre style={{ backgroundColor: '#e0e0e0', padding: '10px', border: '1px solid black', width: '300px' }}>
                   {JSON.stringify(h.tree, null, 2)}
                 </pre>
               </div>
             ))}
           </div>
-          
+
         </div>
       )}
     </div>
